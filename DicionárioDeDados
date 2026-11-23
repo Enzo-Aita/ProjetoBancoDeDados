@@ -1,7 +1,5 @@
 Dicionário de dados – Academia 
 
- 
-
 Definições gerais 
 
 caracterAlfabetico = [A-Z | a-z] *Uma letra do alfabeto* 
