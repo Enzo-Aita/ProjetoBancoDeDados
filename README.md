@@ -1,7 +1,8 @@
-# ProjetoBancoDeDados
+# Banco de Dados – Academia
 
+Trabalho da disciplina de Banco de Dados do curso de Ciência da Computação da Unisul.
 
-# Banco de dados para uma Academia
+Projeto de um banco de dados para uma academia: cadastro de alunos e instrutores, planos, matrículas, pagamentos, avaliações físicas, modalidades, turmas e inscrições.
 
 
 
