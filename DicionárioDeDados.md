@@ -16,6 +16,8 @@ hora = "HH:MM:SS" *Um horário válido com dois dígitos para a hora, dois para 
 
 valorMonetario = 1{caracterNumerico}6 + "." + 2{caracterNumerico}2 *Valor em reais com até seis dígitos inteiros e duas casas decimais; tipo DECIMAL(8,2)* 
 
+## Dicionário
+
 Pessoa = @idPessoa + nome + cpf + dataNascimento + rua + numero + bairro + cidade + uf *Tabela que armazena as informações gerais de qualquer pessoa cadastrada na academia* 
 
 idPessoa = numeroChave *Valor único de identificação da pessoa; INT, obrigatório* 
