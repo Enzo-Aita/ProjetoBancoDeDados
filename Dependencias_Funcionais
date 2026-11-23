@@ -1,0 +1,23 @@
+{idPessoa} → {nome, cpf, dataNascimento, rua, numero, bairro, cidade, uf} 
+
+{idPessoa, telefone} → { } 
+
+{idPessoa, email} → { } 
+
+{idAluno} → {dataCadastro} 
+
+{idInstrutor} → {cref, dataAdmissao} 
+
+{idPlano} → {nome, duracaoMeses, valorMensal} 
+
+{idMatricula} → {idAluno, idPlano, dataInicio, dataFim, status} 
+
+{idMatricula, dataVencimento} → {valor, dataPagamento, formaPagamento} 
+
+{idAluno, dataAvaliacao} → {idInstrutor, peso, altura, percentualGordura} 
+
+{idModalidade} → {nome, descricao} 
+
+{idTurma} → {idModalidade, idInstrutor, diaSemana, horaInicio, horaFim, sala, capacidade} 
+
+{idAluno, idTurma} → {dataInscricao}
