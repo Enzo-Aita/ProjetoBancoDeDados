@@ -1,0 +1,153 @@
+Dicionário de dados – Academia 
+
+ 
+
+Definições gerais 
+
+caracterAlfabetico = [A-Z | a-z] *Uma letra do alfabeto* 
+
+caracterAlfanumerico = [A-Z | a-z | 0-9 | espaço | @ | . | - | _ | / | sinais de pontuação] *Uma letra, um número, um espaço ou um sinal de pontuação* 
+
+caracterNumerico = [0-9] *Um algarismo numérico* 
+
+numeroChave = 1{caracterNumerico}10 *Valor numérico para identificação única de um registro; tipo INT* 
+
+data = "AAAA-MM-DD" *Uma data válida com quatro dígitos para o ano, dois para o mês e dois para o dia; tipo DATE* 
+
+hora = "HH:MM:SS" *Um horário válido com dois dígitos para a hora, dois para os minutos e dois para os segundos; tipo TIME* 
+
+valorMonetario = 1{caracterNumerico}6 + "." + 2{caracterNumerico}2 *Valor em reais com até seis dígitos inteiros e duas casas decimais; tipo DECIMAL(8,2)* 
+
+Pessoa = @idPessoa + nome + cpf + dataNascimento + rua + numero + bairro + cidade + uf *Tabela que armazena as informações gerais de qualquer pessoa cadastrada na academia* 
+
+idPessoa = numeroChave *Valor único de identificação da pessoa; INT, obrigatório* 
+
+nome = 1{caracterAlfanumerico}100 *Nome completo da pessoa; VARCHAR(100), obrigatório* 
+
+cpf = 11{caracterNumerico}11 *Cadastro de Pessoa Física, somente os 11 dígitos; CHAR(11), obrigatório e único* 
+
+dataNascimento = data *Data de nascimento da pessoa; DATE, obrigatório* 
+
+rua = 1{caracterAlfanumerico}100 *Rua do endereço da pessoa; VARCHAR(100), obrigatório* 
+
+numero = 1{caracterAlfanumerico}10 *Número do endereço da pessoa; VARCHAR(10), obrigatório* 
+
+bairro = 1{caracterAlfanumerico}60 *Bairro do endereço da pessoa; VARCHAR(60), obrigatório* 
+
+cidade = 1{caracterAlfanumerico}60 *Cidade do endereço da pessoa; VARCHAR(60), obrigatório* 
+
+uf = 2{caracterAlfabetico}2 *Sigla da Unidade Federativa do endereço; CHAR(2), obrigatório* 
+
+Telefone = @idPessoa + @telefone *Tabela que armazena os telefones de cada pessoa (atributo multivalorado)* 
+
+idPessoa = numeroChave *Pessoa dona do telefone; chave estrangeira para pessoa; INT, obrigatório* 
+
+telefone = 10{caracterNumerico}15 *Número de telefone com DDD, somente dígitos; VARCHAR(15), obrigatório* 
+
+Email = @idPessoa + @email *Tabela que armazena os e-mails de cada pessoa (atributo multivalorado)* 
+
+idPessoa = numeroChave *Pessoa dona do e-mail; chave estrangeira para pessoa; INT, obrigatório* 
+
+email = 1{caracterAlfanumerico}100 *Endereço de e-mail da pessoa; VARCHAR(100), obrigatório e único* 
+
+Aluno = @idAluno + dataCadastro *Tabela que armazena as pessoas que são alunos da academia (subclasse de pessoa)* 
+
+idAluno = numeroChave *Identificação do aluno, igual ao idPessoa; chave estrangeira para pessoa; INT, obrigatório* 
+
+dataCadastro = data *Data em que a pessoa se cadastrou como aluno; DATE, obrigatório* 
+
+Instrutor = @idInstrutor + cref + dataAdmissao *Tabela que armazena as pessoas que são instrutores da academia (subclasse de pessoa)* 
+
+idInstrutor = numeroChave *Identificação do instrutor, igual ao idPessoa; chave estrangeira para pessoa; INT, obrigatório* 
+
+cref = 1{caracterAlfanumerico}15 *Registro no Conselho Regional de Educação Física, no formato 000000-G/UF; VARCHAR(15), obrigatório e único* 
+
+dataAdmissao = data *Data em que o instrutor foi contratado; DATE, obrigatório* 
+
+Plano = @idPlano + nome + duracaoMeses + valorMensal *Tabela que armazena os planos de contratação vendidos pela academia* 
+
+idPlano = numeroChave *Valor único de identificação do plano; INT, obrigatório* 
+
+nome = 1{caracterAlfanumerico}40 *Nome comercial do plano; VARCHAR(40), obrigatório e único* 
+
+duracaoMeses = 1{caracterNumerico}3 *Duração do contrato em meses, maior que zero; INT, obrigatório* 
+
+valorMensal = valorMonetario *Valor atual da mensalidade do plano, maior que zero; DECIMAL(8,2), obrigatório* 
+
+Matricula = @idMatricula + idAluno + idPlano + dataInicio + dataFim + status *Tabela que armazena a contratação de um plano por um aluno* 
+
+idMatricula = numeroChave *Valor único de identificação da matrícula; INT, obrigatório* 
+
+idAluno = numeroChave *Aluno matriculado; chave estrangeira para aluno; INT, obrigatório* 
+
+idPlano = numeroChave *Plano contratado; chave estrangeira para plano; INT, obrigatório* 
+
+dataInicio = data *Data de início da matrícula; DATE, obrigatório* 
+
+dataFim = data *Data de término da matrícula, posterior à dataInicio; DATE, obrigatório* 
+
+status = ["ATIVA" | "TRANCADA" | "ENCERRADA"] *Situação da matrícula; VARCHAR(10), obrigatório* 
+
+Pagamento = @idMatricula + @dataVencimento + valor + (dataPagamento) + (formaPagamento) *Tabela que armazena as mensalidades geradas por uma matrícula (entidade fraca)* 
+
+idMatricula = numeroChave *Matrícula cobrada; chave estrangeira para matricula; INT, obrigatório* 
+
+dataVencimento = data *Data de vencimento da mensalidade; DATE, obrigatório* 
+
+valor = valorMonetario *Valor cobrado na mensalidade, maior que zero; DECIMAL(8,2), obrigatório* 
+
+dataPagamento = data *Data em que a mensalidade foi paga; DATE, opcional (vazio enquanto não for paga)* 
+
+formaPagamento = ["PIX" | "DINHEIRO" | "CARTAO_CREDITO" | "CARTAO_DEBITO" | "BOLETO"] *Forma usada para pagar a mensalidade; VARCHAR(15), opcional (preenchido junto com dataPagamento)* 
+
+AvaliacaoFisica = @idAluno + @dataAvaliacao + idInstrutor + peso + altura + percentualGordura *Tabela que armazena as avaliações físicas feitas pelos alunos (entidade fraca)* 
+
+idAluno = numeroChave *Aluno avaliado; chave estrangeira para aluno; INT, obrigatório* 
+
+dataAvaliacao = data *Data em que a avaliação foi feita; DATE, obrigatório* 
+
+idInstrutor = numeroChave *Instrutor que fez a avaliação, diferente do aluno avaliado; chave estrangeira para instrutor; INT, obrigatório* 
+
+peso = 1{caracterNumerico}4 + "." + 1{caracterNumerico}1 *Peso do aluno em quilogramas, maior que zero; DECIMAL(5,1), obrigatório* 
+
+altura = 1{caracterNumerico}1 + "." + 2{caracterNumerico}2 *Altura do aluno em metros, maior que zero; DECIMAL(3,2), obrigatório* 
+
+percentualGordura = 1{caracterNumerico}3 + "." + 1{caracterNumerico}1 *Percentual de gordura corporal, entre 0 e 100; DECIMAL(4,1), obrigatório* 
+
+Modalidade = @idModalidade + nome + descricao *Tabela que armazena os tipos de aula oferecidos pela academia* 
+
+idModalidade = numeroChave *Valor único de identificação da modalidade; INT, obrigatório* 
+
+nome = 1{caracterAlfanumerico}40 *Nome da modalidade; VARCHAR(40), obrigatório e único* 
+
+descricao = 1{caracterAlfanumerico}200 *Descrição resumida da modalidade; VARCHAR(200), obrigatório* 
+
+Turma = @idTurma + idModalidade + idInstrutor + diaSemana + horaInicio + horaFim + sala + capacidade *Tabela que armazena os horários semanais fixos de cada modalidade* 
+
+ 
+
+ 
+
+idTurma = numeroChave *Valor único de identificação da turma; INT, obrigatório* 
+
+idModalidade = numeroChave *Modalidade da aula; chave estrangeira para modalidade; INT, obrigatório* 
+
+idInstrutor = numeroChave *Instrutor que conduz a turma; chave estrangeira para instrutor; INT, obrigatório* 
+
+diaSemana = ["SEG" | "TER" | "QUA" | "QUI" | "SEX" | "SAB" | "DOM"] *Dia da semana em que a aula acontece; CHAR(3), obrigatório* 
+
+horaInicio = hora *Horário de início da aula; TIME, obrigatório* 
+
+horaFim = hora *Horário de término da aula, depois da horaInicio; TIME, obrigatório* 
+
+sala = 1{caracterAlfanumerico}30 *Nome da sala onde acontece a aula; VARCHAR(30), obrigatório* 
+
+capacidade = 1{caracterNumerico}3 *Número máximo de alunos na turma, maior que zero; INT, obrigatório* 
+
+Inscricao = @idAluno + @idTurma + dataInscricao *Tabela que armazena a inscrição de um aluno em uma turma (relacionamento N:M)* 
+
+idAluno = numeroChave *Aluno inscrito; chave estrangeira para aluno; INT, obrigatório* 
+
+idTurma = numeroChave *Turma em que o aluno se inscreveu; chave estrangeira para turma; INT, obrigatório* 
+
+dataInscricao = data *Data em que a inscrição foi feita; DATE, obrigatório*
