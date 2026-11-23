@@ -1,3 +1,5 @@
+# Dependêcias Funcionais
+
 {idPessoa} → {nome, cpf, dataNascimento, rua, numero, bairro, cidade, uf} 
 
 {idPessoa, telefone} → { } 
